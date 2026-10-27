@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Planes y precios: mapa, direcciones y API del Perú | InkaMaps</title>
+  <meta name="description" content="Empieza gratis. Paga solo si necesitas más. El mapa del Perú con sus direcciones, para usar en inkamaps.com o en tu propia web. Pagas con Yape.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/docs.css">
+  <style>
+    .billing { display: inline-flex; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 999px; padding: 4px; margin-top: 26px; }
+    .billing button { border: 0; background: none; font: 600 14px var(--font); padding: 8px 16px; border-radius: 999px; cursor: pointer; color: var(--ink-2); }
+    .billing button[aria-pressed="true"] { background: #fff; color: var(--ink); box-shadow: var(--shadow); }
+    .billing small { color: var(--green-700); font-weight: 800; margin-left: 4px; }
+    .plans { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: stretch; }
+    .plan { border: 1px solid var(--line); border-radius: 22px; padding: 26px; background: #fff; display: flex; flex-direction: column; gap: 6px; position: relative; }
+    .plan.popular { border: 2px solid var(--green-700); box-shadow: var(--shadow-lg); }
+    .plan .badge { position: absolute; top: -12px; left: 24px; background: var(--green-700); color: #fff; font-size: 12px; font-weight: 800; border-radius: 999px; padding: 3px 12px; }
+    .plan h3 { font-size: 20px; }
+    .plan .for { color: var(--muted); font-size: 14.5px; min-height: 44px; }
+    .plan .price { font-size: 42px; font-weight: 800; letter-spacing: -.03em; margin-top: 8px; line-height: 1; }
+    .plan .price small { font-size: 15px; font-weight: 600; color: var(--muted); letter-spacing: 0; }
+    .plan .save { font-size: 13px; font-weight: 700; color: var(--green-700); min-height: 20px; }
+    .plan ul { list-style: none; padding: 0; margin: 14px 0 22px; display: grid; gap: 9px; font-size: 14.5px; color: var(--ink-2); }
+    .plan li { display: flex; gap: 8px; }
+    .plan li::before { content: "✓"; color: var(--green-700); font-weight: 800; }
+    .plan li.no::before { content: "–"; color: var(--muted); }
+    .plan .btn { margin-top: auto; justify-content: center; }
+    .enterprise { margin-top: 20px; border-radius: 22px; padding: 32px; background: var(--green-900); color: #fff; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
+    .enterprise span { font-size: 12px; font-weight: 800; letter-spacing: .12em; color: #9fe0bd; }
+    .enterprise h3 { font-size: 26px; margin: 6px 0 8px; }
+    .enterprise p { color: rgba(255,255,255,.78); max-width: 680px; }
+    .tbl-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; background: #fff; }
+    .tbl-wrap .table { border: 0; border-radius: 0; min-width: 560px; }
+    .tbl-wrap td small { display: block; color: var(--green-700); font-weight: 700; font-size: 12.5px; }
+    .note { margin-top: 14px; color: var(--muted); font-size: 14.5px; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .step { border-radius: 20px; padding: 26px; background: #fff; border: 1px solid var(--line); }
+    .step b { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--green-100); color: var(--green-800); margin-bottom: 14px; }
+    .step h3 { font-size: 19px; margin-bottom: 6px; }
+    .step p { color: var(--ink-2); font-size: 15px; }
+    @media (max-width: 1024px) { .plans { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 720px) { .plans, .steps { grid-template-columns: 1fr; } .enterprise { grid-template-columns: 1fr; padding: 26px; } .plan .for { min-height: 0; } }
+  </style>
+</head>
+<body>
+<main id="contenido">
+
+  <section class="doc-hero" style="text-align:center">
+    <div class="container">
+      <div class="breadcrumb"><a href="index.html">Inicio</a> / Planes</div>
+      <h1>Empieza gratis. Paga solo si necesitas más.</h1>
+      <p style="margin:0 auto">El mapa del Perú con sus direcciones, para usar en inkamaps.com o en tu propia web. Pagas con Yape: sin tarjetas ni contratos.</p>
+      <div class="billing" role="group" aria-label="Periodo de pago">
+        <button type="button" data-period="1" aria-pressed="true">Mensual</button>
+        <button type="button" data-period="12" aria-pressed="false">12 meses <small>−30 %</small></button>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:56px">
+    <div class="container">
+      <div class="plans">
+        <article class="plan">
+          <h3>Sin sesión</h3>
+          <p class="for">Para mirar el mapa sin registrarte.</p>
+          <div class="price">S/ 0 <small>sin cuenta</small></div>
+          <div class="save"></div>
+          <ul><li>50 vistas del mapa al día</li><li>10 búsquedas al día</li><li>300 sugerencias al escribir</li><li class="no">Sin API keys</li></ul>
+          <a class="btn btn-ghost" href="https://www.inkamaps.com/">Usar el mapa</a>
+        </article>
+        <article class="plan">
+          <h3>Gratis</h3>
+          <p class="for">Para buscar direcciones de vez en cuando.</p>
+          <div class="price">S/ 0 <small>con tu cuenta</small></div>
+          <div class="save"></div>
+          <ul><li>1,000 vistas del mapa al mes</li><li>300 búsquedas al mes</li><li>3,000 sugerencias al escribir</li><li class="no">Sin API keys</li></ul>
+          <a class="btn btn-ghost" href="https://www.inkamaps.com/sign-up?redirect_url=/planes">Crear cuenta gratis</a>
+        </article>
+        <article class="plan popular">
+          <span class="badge">El más elegido</span>
+          <h3>Básico</h3>
+          <p class="for">Para personas y negocios que buscan todos los días.</p>
+          <div class="price" data-monthly="20" data-yearly="14">S/ 20 <small>al mes</small></div>
+          <div class="save" data-yearly-note="Pagando S/ 168 por 12 meses">−30 % o S/ 14 al mes pagando 12 meses</div>
+          <ul><li>5,000 vistas del mapa al mes</li><li>1,000 búsquedas al mes</li><li>10,000 sugerencias al escribir</li><li>API keys: el mapa y las búsquedas en tu web o app</li></ul>
+          <a class="btn btn-primary" href="https://www.inkamaps.com/sign-up?redirect_url=%2Fplanes%2Fpagar%3Fplan%3Dbasico">Crear cuenta y elegir</a>
+        </article>
+        <article class="plan">
+          <h3>Estándar</h3>
+          <p class="for">Para negocios con más movimiento y su propia web o app.</p>
+          <div class="price" data-monthly="50" data-yearly="35">S/ 50 <small>al mes</small></div>
+          <div class="save" data-yearly-note="Pagando S/ 420 por 12 meses">−30 % o S/ 35 al mes pagando 12 meses</div>
+          <ul><li>10,000 vistas del mapa al mes</li><li>3,000 búsquedas al mes</li><li>30,000 sugerencias al escribir</li><li>API keys: el mapa y las búsquedas en tu web o app</li></ul>
+          <a class="btn btn-ghost" href="https://www.inkamaps.com/sign-up?redirect_url=%2Fplanes%2Fpagar%3Fplan%3Destandar">Crear cuenta y elegir</a>
+        </article>
+      </div>
+
+      <div class="enterprise">
+        <div>
+          <span>EMPRESA</span>
+          <h3>Ilimitado y a tu medida</h3>
+          <p>Vistas, búsquedas y API sin un tope fijo, más API keys y usuarios, soporte directo y comprobante para tu empresa. Te armamos el plan según tu volumen. Incluye el <a href="legal-nivel-de-servicio.html" style="color:#fff;text-decoration:underline">SLA de 99,9 %</a>.</p>
+        </div>
+        <a class="btn btn-light" href="https://wa.me/51960995514?text=Hola%2C%20quiero%20el%20plan%20Empresa%20(ilimitado)%20de%20InkaMaps." target="_blank" rel="noopener">Consultar por WhatsApp →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="soft" id="descuentos">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Descuentos</span>
+        <h2>Paga varios meses y ahorra</h2>
+        <p>3 meses con 10 % de descuento, 6 meses con 20 % y 12 meses con 30 %. Si renuevas antes de que venza, los días se suman.</p>
+      </div>
+      <div class="tbl-wrap">
+        <table class="table">
+          <thead><tr><th></th><th>1 mes</th><th>3 meses</th><th>6 meses</th><th>12 meses</th></tr></thead>
+          <tbody>
+            <tr><td><b>Básico</b></td><td>S/ 20</td><td>S/ 54<small>−10 % · ahorras S/ 6</small></td><td>S/ 96<small>−20 % · ahorras S/ 24</small></td><td>S/ 168<small>−30 % · ahorras S/ 72</small></td></tr>
+            <tr><td><b>Estándar</b></td><td>S/ 50</td><td>S/ 135<small>−10 % · ahorras S/ 15</small></td><td>S/ 240<small>−20 % · ahorras S/ 60</small></td><td>S/ 420<small>−30 % · ahorras S/ 180</small></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Cómo armamos el precio: S/ 10 cada mil búsquedas + S/ 2 cada mil vistas del mapa.</p>
+    </div>
+  </section>
+
+  <section id="que-cuenta">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Consumo</span>
+        <h2>¿Qué cuenta?</h2>
+        <p>Lo mismo en el mapa de inkamaps.com y en tu web con tu API key. Si llegas al límite, lo que se acabó se pausa hasta el día o mes siguiente, o hasta que amplíes tu plan: nunca te cobramos de más.</p>
+      </div>
+      <div class="tbl-wrap">
+        <table class="table">
+          <thead><tr><th></th><th>Cuenta 1 cuando…</th><th>No cuenta</th></tr></thead>
+          <tbody>
+            <tr><td><b>Vista del mapa</b></td><td>Abrir el mapa (en inkamaps.com o en tu web con tu API key).</td><td>Moverlo, acercarlo, cambiar de estilo o recargar la página dentro de media hora.</td></tr>
+            <tr><td><b>Búsqueda</b></td><td>Buscar una dirección, elegir una sugerencia, tocar el mapa para ver qué dirección es y consultar tus capas.</td><td>Escribir: mientras escribes son sugerencias.</td></tr>
+            <tr><td><b>Sugerencia</b></td><td>Lo que te proponemos mientras escribes y los lugares que se ven en la pantalla.</td><td>No se cobran: tienen un tope de 10 por cada búsqueda de tu plan.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="soft" id="yape">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Pago</span>
+        <h2>Cómo pagar con Yape</h2>
+      </div>
+      <div class="steps">
+        <div class="step reveal"><b>1</b><h3>Elige tu plan</h3><p>Básico o Estándar, por 1, 3, 6 o 12 meses. Te damos un código como IM-7K2N.</p></div>
+        <div class="step reveal"><b>2</b><h3>Yapea con tu código</h3><p>Escanea el QR o yapea al número y escribe tu código en el mensaje del Yape.</p></div>
+        <div class="step reveal"><b>3</b><h3>Avísanos</h3><p>Con el número de operación, la captura o solo tu código. Lo confirmamos en el día y tu plan se activa solo.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="container">
+      <div class="section-head center"><span class="eyebrow">Preguntas frecuentes</span><h2>Sobre los planes</h2></div>
+      <div class="faq">
+        <details><summary>¿Qué pasa si renuevo antes de que venza?</summary><p>Los días se suman al vencimiento: no pierdes nada.</p></details>
+        <details><summary>¿Y si se vence?</summary><p>Vuelves al plan Gratis (1.000 vistas y 300 búsquedas al mes). Tus datos y tu cuenta siguen igual.</p></details>
+        <details><summary>¿Qué son las API keys?</summary><p>Una clave para usar el mapa base, la búsqueda de direcciones y el autocompletado en tu propia web o app. Vienen con los planes Básico y Estándar, y lo que uses con ellas descuenta de tu plan. Mira la <a href="desarrolladores.html#autenticacion" class="link-arrow">documentación</a>.</p></details>
+        <details><summary>¿Necesito más que el Estándar?</summary><p>Escríbenos y armamos un plan a tu medida por <a href="https://wa.me/51960995514?text=Hola%2C%20necesito%20un%20plan%20de%20InkaMaps%20m%C3%A1s%20grande%20que%20el%20Est%C3%A1ndar." class="link-arrow">WhatsApp</a>.</p></details>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="assets/site.js"></script>
+<script>
+  // Alterna precio mensual / pagando 12 meses
+  document.querySelectorAll(".billing button").forEach((b) => b.addEventListener("click", () => {
+    const yearly = b.dataset.period === "12";
+    document.querySelectorAll(".billing button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    document.querySelectorAll(".price[data-monthly]").forEach((p) => {
+      p.firstChild.textContent = `S/ ${yearly ? p.dataset.yearly : p.dataset.monthly} `;
+      const save = p.nextElementSibling;
+      save.dataset.monthlyNote ??= save.textContent;
+      save.textContent = yearly ? save.dataset.yearlyNote : save.dataset.monthlyNote;
+    });
+  }));
+</script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mapas: mapa base e InkaMaps Builder | InkaMaps</title>
+  <meta name="description" content="Mapa base vectorial del Perú en ocho estilos, con vías, manzanas y lotes. Crea, consulta y publica tus capas con InkaMaps Builder.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<main id="contenido">
+
+  <section class="p-hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="breadcrumb"><a href="index.html">Productos</a> / Mapas</div>
+        <h1 style="font-size:clamp(38px,5.4vw,60px);font-weight:800;margin-bottom:20px">Mapas del Perú, <span style="color:var(--green-700)">a tu estilo</span></h1>
+        <p class="lead" style="font-size:19px;color:var(--ink-2);margin-bottom:28px;max-width:520px">Cartografía vectorial con vías, manzanas y lotes en ocho estilos, más las herramientas para crear y publicar los mapas de tu negocio.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="index.html#contacto">Empezar gratis →</a>
+          <a class="btn btn-ghost" href="#estilos">Ver los estilos</a>
+        </div>
+      </div>
+      <div class="hero-visual reveal"><img src="https://mapas.inkamaps.com/v1/temas/inkamaps.webp" alt="Mapa base catastral de InkaMaps con manzanas y lotes"></div>
+    </div>
+  </section>
+
+  <nav class="subnav" aria-label="Secciones de Mapas">
+    <div class="container">
+      <a href="#mapa-base">Mapa base</a>
+      <a href="#estilos">Estilos</a>
+      <a href="#builder">InkaMaps Builder</a>
+      <a href="#casos">Casos de uso</a>
+    </div>
+  </nav>
+
+  <!-- MAPA BASE -->
+  <section id="mapa-base">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">Mapa base</span>
+        <h2>Vías, manzanas, lotes y límites del Perú</h2>
+        <p class="desc">Cartografía vectorial al detalle: red vial con nombres y cuadras, urbanizaciones, manzanas, lotes y numeración. Para MapLibre, en tu web o app.</p>
+        <ul class="checklist">
+          <li>Teselas vectoriales rápidas, con etiquetas en español y nombres locales.</li>
+          <li>Límites y ubigeo INEI de departamentos, provincias y distritos.</li>
+          <li>Edificios en 3D en los estilos Estándar, Oscuro y Medianoche.</li>
+          <li>Cambiar de estilo es cambiar una palabra en la URL.</li>
+        </ul>
+        <a class="link-arrow" href="desarrolladores.html">Ver la documentación</a>
+      </div>
+      <div class="code reveal">
+        <div class="code-bar"><i></i><i></i><i></i>&nbsp; mapa.js</div>
+<pre><span class="k">const</span> map = <span class="k">new</span> maplibregl.Map({
+  container: <span class="s">"mapa"</span>,
+  style: <span class="s">"https://mapas.inkamaps.com/v1/estilos/</span>
+<span class="s">         oscuro.json?key=TU_KEY"</span>,
+  center: [-77.03, -12.12],
+  zoom: 15,
+});</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESTILOS -->
+  <section class="soft" id="estilos">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Estilos</span>
+        <h2>Un mapa, ocho estilos</h2>
+        <p>El mismo mapa del Perú con otros colores: elige el que va con tu marca.</p>
+      </div>
+      <div class="styles-grid">
+        <div class="style-card reveal"><img src="https://mapas.inkamaps.com/v1/temas/inkamaps.webp" alt="Estilo InkaMaps" loading="lazy"><div><b>InkaMaps</b><p>Catastral, con lotes y cuadras.</p></div></div>
+        <div class="style-card reveal"><img src="https://mapas.inkamaps.com/v1/temas/estandar.webp" alt="Estilo Estándar" loading="lazy"><div><b>Estándar · 3D</b><p>Uso general, con edificios en 3D.</p></div></div>
+        <div class="style-card reveal"><img src="https://mapas.inkamaps.com/v1/temas/claro.webp" alt="Estilo Claro" loading="lazy"><div><b>Claro</b><p>Deja que resalten tus puntos y rutas.</p></div></div>
+        <div class="style-card reveal"><img src="https://mapas.inkamaps.com/v1/temas/calles.webp" alt="Estilo Calles" loading="lazy"><div><b>Calles</b><p>Calles y avenidas bien marcadas.</p></div></div>
+        <div class="style-card reveal"><img src="https://mapas.inkamaps.com/v1/temas/andino.webp" alt="Estilo Andino" loading="lazy"><div><b>Andino</b><p>Tonos tierra: turismo y festividades.</p></div></div>
+        <div class="style-card reveal"><img src="https://mapas.inkamaps.com/v1/temas/pergamino.webp" alt="Estilo Pergamino" loading="lazy"><div><b>Pergamino</b><p>Centros históricos e impresos.</p></div></div>
+        <div class="style-card reveal"><img src="https://mapas.inkamaps.com/v1/temas/oscuro.webp" alt="Estilo Oscuro" loading="lazy"><div><b>Oscuro · 3D</b><p>Fondo oscuro: modo noche.</p></div></div>
+        <div class="style-card reveal"><img src="https://mapas.inkamaps.com/v1/temas/medianoche.webp" alt="Estilo Medianoche" loading="lazy"><div><b>Medianoche · 3D</b><p>Azul marino y dorado.</p></div></div>
+      </div>
+      <p style="margin-top:28px"><a class="link-arrow" href="desarrolladores.html#mapa-base">Cómo usarlos en tu web</a></p>
+    </div>
+  </section>
+
+  <!-- INKAMAPS BUILDER -->
+  <section class="dark" id="builder">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">InkaMaps Builder</span>
+        <h2>Los mapas de tu negocio, sin saber de GIS</h2>
+        <p class="desc">Tus locales, clientes, zonas de reparto o rutas sobre el mapa del Perú. Dibújalas desde el navegador y, cuando las necesites en tu sistema, consúltalas por API con la misma key.</p>
+        <ul class="checklist">
+          <li>Dibuja o sube tus capas: Excel (CSV), KML, Shapefile, GeoPackage…</li>
+          <li>Colores, íconos y etiquetas para cada capa.</li>
+          <li>Pregúntale al mapa qué hay cerca o en qué zona cae una dirección.</li>
+          <li>Consultas por API, también en lote: hasta 1.000 puntos por llamada.</li>
+        </ul>
+        <div class="hero-ctas">
+          <a class="btn btn-light" href="index.html#contacto">Crear mi mapa</a>
+          <a class="btn btn-outline-light" href="desarrolladores.html#builder">Ver la API de Builder</a>
+        </div>
+      </div>
+      <div class="split-visual reveal"><img src="https://mapas.inkamaps.com/v1/temas/medianoche.webp" alt="Mapa de zonas de reparto en estilo Medianoche" loading="lazy"></div>
+    </div>
+    <div class="container" style="margin-top:56px">
+      <div class="feature-grid">
+        <div class="feature reveal" style="background:#15211c;border-color:rgba(255,255,255,.1)"><h3 style="color:#fff">1. Crea tus capas</h3><p>Dibuja sobre el mapa o sube tu archivo. Sin instalar nada y sin especialistas.</p></div>
+        <div class="feature reveal" style="background:#15211c;border-color:rgba(255,255,255,.1)"><h3 style="color:#fff">2. Pregúntale al mapa</h3><p>En qué zona cae un punto, los elementos más cercanos, todo lo que hay en un radio o lo que cruza una ruta.</p></div>
+        <div class="feature reveal" style="background:#15211c;border-color:rgba(255,255,255,.1)"><h3 style="color:#fff">3. Úsalo en tu sistema</h3><p>Guarda tus consultas como servicios con URL fija y llámalas desde tu sistema con tu API key.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASOS DE USO -->
+  <section id="casos">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Casos de uso</span>
+        <h2>Qué puedes construir con Mapas</h2>
+      </div>
+      <div class="feature-grid">
+        <div class="feature reveal"><div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z"/></svg></div><h3>Localizador de tiendas</h3><p>Muestra tus locales y el más cercano a cada cliente.</p></div>
+        <div class="feature reveal"><div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 12h16M12 4v16"/></svg></div><h3>Portales inmobiliarios</h3><p>Propiedades sobre manzanas y lotes, con el estilo catastral.</p></div>
+        <div class="feature reveal"><div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></div><h3>Seguimiento de flotas</h3><p>Unidades en vivo sobre el estilo Oscuro, de día y de noche.</p></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="cta-band" id="contacto">
+  <div class="container">
+    <div class="cta-box">
+      <div><h2>Lleva el mapa del Perú a tu producto</h2><p>Te damos acceso a la consola para que pruebes los estilos con tu propia key.</p></div>
+      <div class="actions">
+        <a class="btn btn-light" href="https://wa.me/51960995514?text=Hola%2C%20quiero%20usar%20los%20mapas%20de%20InkaMaps." target="_blank" rel="noopener">Solicitar acceso →</a>
+        <a class="btn btn-outline-light" href="planes.html">Ver planes</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

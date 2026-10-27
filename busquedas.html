@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Búsquedas: Places, Geocoding y Autocompletado | InkaMaps</title>
+  <meta name="description" content="Busca lugares y direcciones del Perú por API: Places, Geocoding directo e inverso, Autocompletado, y una consola para gestionar tus keys.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<main id="contenido">
+
+  <section class="p-hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="breadcrumb"><a href="index.html">Productos</a> / Búsquedas</div>
+        <h1 style="font-size:clamp(38px,5.4vw,60px);font-weight:800;margin-bottom:20px">Encuentra cualquier lugar <span style="color:var(--green-700)">del Perú</span></h1>
+        <p class="lead" style="font-size:19px;color:var(--ink-2);margin-bottom:28px;max-width:520px">Lugares, direcciones y sugerencias mientras escribes. Entiende jirones, pasajes, AA.HH. y referencias, y responde con ubigeo, manzana y lote.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="index.html#contacto">Solicitar acceso →</a>
+          <a class="btn btn-ghost" href="desarrolladores.html">Ver la API</a>
+        </div>
+      </div>
+      <div class="hero-visual reveal" style="aspect-ratio:auto">
+        <img src="https://mapas.inkamaps.com/v1/temas/claro.webp" alt="" style="aspect-ratio:5/4">
+        <div class="float-card search" style="top:18px;bottom:auto">
+          <div class="q" style="border-color:var(--green-600)">av josé la|</div>
+          <div class="r" style="padding:6px 4px;border-radius:6px;background:var(--green-50)"><div><b>Av. José Larco</b>Miraflores, Lima</div></div>
+          <div class="r" style="padding:6px 4px"><div><b>Av. José Gálvez Barrenechea</b>San Isidro, Lima</div></div>
+          <div class="r" style="padding:6px 4px"><div><b>Av. José Leal</b>Lince, Lima</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="subnav" aria-label="Secciones de Búsquedas">
+    <div class="container">
+      <a href="#places">Places</a>
+      <a href="#geocoding">Geocoding</a>
+      <a href="#autocompletado">Autocompletado</a>
+      <a href="#api">API y consola</a>
+    </div>
+  </nav>
+
+  <section class="soft">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Búsquedas</span>
+        <h2>Cuatro piezas, un mismo índice del Perú</h2>
+        <p>Todas comparten los mismos datos de base, así que lo que encuentras en una, lo ubicas en las demás.</p>
+      </div>
+      <div class="feature-grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+        <a class="feature reveal" href="#places"><div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div><h3>Places</h3><p>Lugares turísticos, cívicos y comerciales curados.</p></a>
+        <a class="feature reveal" href="#geocoding"><div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 7h10l-3-3M17 17H7l3 3"/></svg></div><h3>Geocoding</h3><p>De dirección a punto y de punto a dirección.</p></a>
+        <a class="feature reveal" href="#autocompletado"><div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M4 12h16M4 17h7"/></svg></div><h3>Autocompletado</h3><p>Sugerencias letra por letra para formularios.</p></a>
+        <a class="feature reveal" href="#api"><div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 8-4 4 4 4M16 8l4 4-4 4"/></svg></div><h3>API y consola</h3><p>Keys por sistema, pruebas y consumo diario.</p></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLACES -->
+  <section id="places">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">Places</span>
+        <h2>Lugares y negocios, con datos que sirven</h2>
+        <p class="desc">Lugares turísticos, cívicos y comerciales curados, con ubicación, fotos, horarios y datos de contacto.</p>
+        <ul class="checklist">
+          <li>Busca por nombre, categoría o cercanía a un punto.</li>
+          <li>Fichas con horarios, teléfono, web y fotos.</li>
+          <li>Categorías pensadas para el Perú: mercados, huacas, municipalidades…</li>
+        </ul>
+        <a class="link-arrow" href="https://www.inkamaps.com/">Ver lugares en el mapa</a>
+      </div>
+      <div class="split-visual reveal">
+        <img src="https://mapas.inkamaps.com/v1/temas/calles.webp" alt="" loading="lazy">
+        <div class="float-card" style="left:18px;bottom:18px;max-width:240px"><b style="font-size:15px">Parque Kennedy</b><br><span style="color:var(--muted)">Parque · Miraflores · </span><span style="color:var(--green-700);font-weight:600">Abierto</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GEOCODING -->
+  <section class="soft" id="geocoding">
+    <div class="container split reverse">
+      <div>
+        <span class="eyebrow">Geocoding</span>
+        <h2>Dirección ↔ coordenada, como se escribe en el Perú</h2>
+        <p class="desc">De dirección a punto y de punto a dirección, con ubigeo, manzana y lote. Responde en el formato de Geodir, así que migrar es cambiar la URL y la key.</p>
+        <ul class="checklist">
+          <li>Entiende “Jr.”, “Psje.”, “Mz. B Lt. 12”, AA.HH. y referencias.</li>
+          <li>Geocodificación inversa con distancia y nivel de confianza.</li>
+        </ul>
+        <a class="link-arrow" href="desarrolladores.html#geocoding">Ver la API de Geocoding</a>
+      </div>
+      <div class="code reveal">
+        <div class="code-bar"><i></i><i></i><i></i>&nbsp; terminal</div>
+<pre><span class="c">$</span> curl <span class="s">"…/v1/geocode?latlon=-12.13,-77.03"</span> \
+    -H <span class="s">"x-api-key: ik_sk_…"</span>
+
+{
+  <span class="s">"status"</span>: <span class="s">"OK"</span>,
+  <span class="s">"standard_address"</span>: <span class="s">"AV. JOSE LARCO 1150"</span>,
+  <span class="s">"ubigeo"</span>: <span class="s">"150122"</span>,
+  <span class="s">"distance_m"</span>: <span class="k">4</span>
+}
+<span class="c">200 OK · 84 ms</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUTOCOMPLETADO -->
+  <section id="autocompletado">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">Autocompletado</span>
+        <h2>Búsqueda mientras escribes</h2>
+        <p class="desc">Sugerencias de direcciones y lugares letra por letra, para tus formularios de registro, checkout y buscadores.</p>
+        <ul class="checklist">
+          <li>Prioriza resultados cerca del usuario o en un distrito.</li>
+          <li>Tolera tildes, abreviaturas y errores de tipeo.</li>
+          <li>Menos direcciones mal escritas, menos entregas fallidas.</li>
+        </ul>
+        <a class="link-arrow" href="desarrolladores.html#autocompletado">Ver la API de Autocompletado</a>
+      </div>
+      <div class="split-visual reveal" style="background:linear-gradient(135deg,#e9f4ee,#f7faf8)">
+        <div class="mock-search" style="position:relative;aspect-ratio:4/3"><div class="box" style="max-width:360px;font-size:14px">
+          <div class="in">jr de la uni|</div>
+          <div class="opt">Jr. de la Unión <small>Cercado de Lima</small></div>
+          <div class="opt">Jr. Unión <small>Breña</small></div>
+          <div class="opt">Universidad Nacional Mayor de San Marcos <small>Lugar</small></div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- API Y CONSOLA -->
+  <section class="dark" id="api">
+    <div class="container split reverse">
+      <div>
+        <span class="eyebrow">API y consola</span>
+        <h2>Para desarrolladores, desde el primer día</h2>
+        <p class="desc">Una key por sistema, consola para crear y revocar keys, probar las APIs y ver tu consumo día a día.</p>
+        <ul class="checklist">
+          <li>API REST en JSON, autenticada con el header <code>x-api-key</code>.</li>
+          <li>Si una key se filtra, revocas solo esa.</li>
+          <li>Consumo por API y por día, con precios en soles.</li>
+          <li>Documentación y ejemplos en español.</li>
+        </ul>
+        <div class="hero-ctas">
+          <a class="btn btn-light" href="https://www.inkamaps.com/consola">Ir a la consola</a>
+          <a class="btn btn-outline-light" href="desarrolladores.html">Leer la documentación</a>
+        </div>
+      </div>
+      <div class="code reveal" style="background:#152420">
+        <div class="code-bar"><i></i><i></i><i></i>&nbsp; autocompletar.js</div>
+<pre><span class="k">const</span> q = <span class="s">"av josé la"</span>;
+<span class="k">const</span> res = <span class="k">await</span> fetch(
+  <span class="s">`${API}/v1/autocomplete?q=${encodeURIComponent(q)}`</span>,
+  { headers: { <span class="s">"x-api-key"</span>: KEY } }
+);
+<span class="k">const</span> { suggestions } = <span class="k">await</span> res.json();
+<span class="c">// → Av. José Larco, Miraflores …</span></pre>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="cta-band" style="padding-top:96px" id="contacto">
+  <div class="container">
+    <div class="cta-box">
+      <div><h2>Prueba las búsquedas con tus direcciones</h2><p>Te damos acceso a la consola para que valides la calidad con tus propios datos.</p></div>
+      <div class="actions">
+        <a class="btn btn-light" href="https://wa.me/51960995514?text=Hola%2C%20quiero%20probar%20las%20b%C3%BAsquedas%20de%20InkaMaps." target="_blank" rel="noopener">Solicitar acceso →</a>
+        <a class="btn btn-outline-light" href="planes.html">Ver planes</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

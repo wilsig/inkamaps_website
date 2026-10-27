@@ -1,0 +1,157 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Desarrolladores: API de InkaMaps</title>
+  <meta name="description" content="Documentación de la API de InkaMaps: Places, Geocoding, Autocompletado, Mapa base y Builder.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/docs.css">
+</head>
+<body>
+<main id="contenido">
+  <section class="doc-hero">
+    <div class="container">
+      <div class="breadcrumb"><a href="index.html">Inicio</a> / Desarrolladores</div>
+      <h1>API de InkaMaps</h1>
+      <p>Datos geográficos del Perú por HTTP: <strong>Places</strong>, <strong>Geocoding</strong>, <strong>Autocompletado</strong>, el <strong>Mapa base</strong> y consultas espaciales a tus propias capas con <strong>InkaMaps Builder</strong>.</p>
+    </div>
+  </section>
+  <div class="container doc-layout">
+    <aside class="doc-side" aria-label="En esta página">
+      
+      <p class="doc-side-title">En esta página</p>
+      <nav class="doc-toc">
+<a href="#inicio">Inicio rápido</a>
+<a href="#autenticacion">Autenticación y API keys</a>
+<a href="#places-search">Places · Buscar</a>
+<a href="#places-autocomplete">Places · Autocompletar</a>
+<a href="#places-detalle">Places · Detalle</a>
+<a href="#places-categorias">Places · Categorías de fotos</a>
+<a href="#geocoding">Geocoding · Dirección → punto</a>
+<a href="#inverso">Geocoding · Punto → dirección</a>
+<a href="#autocompletado">Autocompletado y detalle</a>
+<a href="#capas">Geocoding · Capas y domicilio (búsqueda estructurada)</a>
+<a href="#mapa-base">Mapa base</a>
+<a href="#builder">InkaMaps Builder · Consultas a tus capas</a>
+<a href="#errores">Errores</a>
+<a href="#limites">Límites de uso</a>
+<a href="#ejemplos">Ejemplos por lenguaje</a>
+<a href="#probar">Probar con tu key</a>
+      </nav>
+    </aside>
+    <article class="prose">
+<section id="inicio"><h2>Inicio rápido</h2><ol><li>Pide acceso a InkaMaps. Damos de alta a tu empresa, habilitamos las APIs que necesitas y vinculamos a tu equipo.</li><li>Entra a la <a href="https://www.inkamaps.com/consola">consola</a> y crea una <strong>key de servidor</strong> en <strong>API keys</strong> (la puedes volver a ver cuando quieras con «Mostrar»). Empieza a funcionar en aproximadamente un minuto (antes responde 403).</li><li>Haz tu primera consulta: los lugares a 2 km de una coordenada, del más cercano al más lejano.</li></ol><pre><code>curl "https://api.inkamaps.com/v1/places/search?lat=-12.065&lon=-75.21&radiusKm=2" \
+  -H "x-api-key: ik_sk_TU_KEY"</code></pre><p>Todas las respuestas son JSON con la misma forma: <code>success</code>, <code>data</code> (o <code>error</code>) y <code>metadata</code> con la fecha y un <code>requestId</code> para soporte.</p></section><section id="autenticacion"><h2>Autenticación y API keys</h2><p>Cada consulta lleva la key en el header <code>x-api-key</code> (también se acepta <code>?key=</code> en la URL, como en Geodir; el header es lo recomendado: la URL queda en historiales). Hay dos tipos:</p><div><table><thead><tr><th>Tipo</th><th>Prefijo</th><th>Úsala en</th><th>Restricción</th></tr></thead><tbody><tr><td>Servidor</td><td><code>ik_sk_…</code></td><td>Tu backend (Node, PHP, Python…)</td><td>Ninguna, pero es secreta: guárdala en una variable de entorno</td></tr><tr><td>Navegador</td><td><code>ik_pk_…</code></td><td>Código que corre en el navegador</td><td>Solo responde a los dominios que registres (ej. https://*.tuempresa.pe)</td></tr></tbody></table></div><p>Nunca pongas una key de servidor en el código del navegador ni en una app móvil: cualquiera podría copiarla. Si necesitas consultar desde el navegador, usa una key de navegador con tus dominios, o llama a tu propio backend y que él consulte a InkaMaps.</p><p>Desde la consola puedes <strong>pausar</strong> una key (deja de responder y la reactivas cuando quieras) o <strong>revocarla</strong> (definitivo). Si una key se filtra: crea una nueva, cámbiala en tu sistema y revoca la anterior. Cada cuenta tiene hasta 5 keys en uso.</p></section><section id="places-search"><h2>Places · Buscar</h2><p><span>GET</span><span>/v1/places/search</span></p><p>Busca lugares publicados. Combina texto, ciudad, tipo y uno de los dos filtros geográficos.</p><div><table><thead><tr><th>Parámetro</th><th>Ejemplo</th><th>Descripción</th></tr></thead><tbody><tr><td>lat, lon</td><td>-12.065, -75.21</td><td>Punto de referencia. Los resultados vienen ordenados por distancia.</td></tr><tr><td>radiusKm</td><td>2</td><td>Radio alrededor del punto (por defecto 5).</td></tr><tr><td>bbox</td><td>-75.23,-12.08,-75.19,-12.05</td><td>Zona visible del mapa: oeste,sur,este,norte. No se combina con lat/lon.</td></tr><tr><td>q</td><td>mirador</td><td>Texto libre (nombre, tipo, descripción). Tolera errores de tipeo.</td></tr><tr><td>city</td><td>huancayo</td><td>Ciudad (clave en minúsculas, sin tildes).</td></tr><tr><td>type</td><td>parque,mirador</td><td>Uno o más tipos de lugar, separados por coma.</td></tr><tr><td>size</td><td>20</td><td>Cantidad de resultados (máximo 100).</td></tr></tbody></table></div><p>Orden: por distancia si mandas <code>lat/lon</code>; por relevancia si mandas <code>q</code>; si no, destacados primero.</p><pre><code>{
+  "success": true,
+  "data": {
+    "results": [
+      {
+        "id": "plc_7f3a9c1e2b",
+        "name": "Parque de los Mates Burilados",
+        "poiType": "parque",
+        "placeKind": "tourist",
+        "city": "huancayo",
+        "location": { "lat": -12.0651, "lon": -75.2049 },
+        "cover": "https://…/photos/original/plc_7f3a9c1e2b/med_1.webp",
+        "photoCount": 6,
+        "hasVideo": false,
+        "videoPoster": null,
+        "contact": { "phone": null, "whatsapp": null, "website": null },
+        "featured": true,
+        "distanceMeters": 412.7
+      }
+    ],
+    "total": 1
+  },
+  "metadata": { "timestamp": "2026-10-01T15:00:00.000Z", "requestId": "…" }
+}</code></pre><p><code>distanceMeters</code> solo viene cuando buscas por <code>lat/lon</code>.</p></section><section id="places-autocomplete"><h2>Places · Autocompletar</h2><p><span>GET</span><span>/v1/places/autocomplete</span></p><p>Sugerencias mientras el usuario escribe un nombre de lugar (mínimo 2 caracteres, hasta 8 resultados).</p><div><table><thead><tr><th>Parámetro</th><th>Ejemplo</th><th>Descripción</th></tr></thead><tbody><tr><td>q</td><td>mira</td><td>Texto escrito hasta ahora (obligatorio, 2 caracteres o más).</td></tr><tr><td>city</td><td>huancayo</td><td>Opcional: solo lugares de esa ciudad.</td></tr></tbody></table></div><pre><code>{ "success": true, "data": { "results": [
+  { "id": "plc_7f3a9c1e2b", "name": "Mirador Cerro de la Libertad", "poiType": "mirador", "city": "huancayo" }
+] } }</code></pre></section><section id="places-detalle"><h2>Places · Detalle</h2><p><span>GET</span><span>/v1/places/{id}</span></p><p>Ficha completa de un lugar publicado, por su <code>id</code> (<code>plc_…</code>) o su <code>slug</code>. Incluye fotos y video con sus URLs, horarios, contacto, consejos y la dirección desglosada.</p><pre><code>{ "success": true, "data": { "place": {
+  "id": "plc_7f3a9c1e2b", "slug": "parque-de-los-mates-burilados-1201",
+  "name": "Parque de los Mates Burilados", "poiType": "parque", "placeKind": "tourist",
+  "description": "…", "geo": { "lat": -12.0651, "lng": -75.2049 },
+  "address": "Jr. Arroyos 250", "ubigeo": "120114", "cityCode": "huancayo",
+  "addressDetail": {
+    "viaType": "jiron", "viaName": "Arroyos", "number": "250", "block": null, "lot": null,
+    "sublocality": "Millotingo", "reference": "Frente al puente Carrión",
+    "adminLevel1": "Junín", "adminLevel1Code": "12",
+    "adminLevel2": "Huancayo", "adminLevel2Code": "1201",
+    "adminLevel3": "El Tambo", "adminLevel3Code": "120114",
+    "postalCode": null, "adminLevel3Source": "geocode"
+  },
+  "coverPhoto": "https://…", "photos": [ … ], "videos": [ … ],
+  "hours": { "lunes": { "closed": false, "open": "08:00", "close": "18:00" } },
+  "contact": { "phone": null, "whatsapp": null, "website": null, "instagram": null },
+  "tips": ["Ir al atardecer"], "publishedAt": "2026-10-01T15:00:00.000Z"
+} } }</code></pre><p><code>addressDetail</code> puede ser <code>null</code> en lugares cargados antes de que existiera el desglose. Los códigos son los UBIGEO del INEI: departamento (2 dígitos) ⊂ provincia (4) ⊂ distrito (6).</p></section><section id="places-categorias"><h2>Places · Categorías de fotos</h2><p><span>GET</span><span>/v1/places/photo-categories</span></p><p>Catálogo de categorías de fotos por tipo de lugar (vista, acceso, interior…). Con <code>?poiType=museo</code> devuelve solo las de ese tipo. Útil para armar galerías ordenadas.</p></section><section id="geocoding"><h2>Geocoding · Dirección → punto</h2><p><span>GET</span><span>/v1/geocode?address=…</span></p><p>Convierte una dirección del Perú en una coordenada. Entiende direcciones mal escritas, desordenadas o incompletas: tipos de vía abreviados ("jr", "av"), errores de tipeo ("ruis gayo" = Ruiz Gallo), <code>N°</code>, <code>S/N</code>, manzana y lote (<code>Mz A Lt 5</code>), cuadras (<code>cdra 24</code>), urbanizaciones y A.H., y el distrito al final o abreviado (<code>VES</code>, <code>SJL</code>).</p><div><table><thead><tr><th>Parámetro</th><th>Ejemplo</th><th>Para qué</th></tr></thead><tbody><tr><td><code>address</code></td><td>JR PEDRO RUIZ GALLO 668</td><td>La dirección como la escribió la persona (obligatorio).</td></tr><tr><td><code>segments</code></td><td>locality_id:150105</td><td>Cierra la búsqueda a un distrito (6 dígitos), provincia (4) o departamento (2).</td></tr></tbody></table></div><pre><code>curl "https://api.inkamaps.com/v1/geocode?address=JR%20PEDRO%20RUIZ%20GALLO%20668&segments=locality_id:150105" \
+  -H "x-api-key: ik_sk_TU_KEY"</code></pre><p>Responde en el <strong>mismo formato que Geodir</strong> (si ya lo usas, cambias la dirección y la key): <code>status</code> y <code>results[]</code>, el más seguro primero. Cada resultado trae <code>address_segments</code> (vía, número, manzana, lote, urbanización, distrito con su ubigeo…), <code>geometry</code>, <code>place_id</code> y <code>standard_address</code>, más dos campos nuevos: <code>confidence</code> (0–1) y <code>match</code> (qué partes de la dirección se encontraron).</p><pre><code>{
+  "status": "OK",
+  "results": [{
+    "result_types": ["address"],
+    "standard_address": "Jirón Pedro Ruiz Gallo 668, Breña, Lima, Perú",
+    "geometry": { "coordinates": { "lat": -12.065826, "lon": -77.054652 }, "geocoding_type": "INTERPOLATED", "bbox": [...] },
+    "address_segments": [{ "name": "668", "name_abbr": "668", "types": ["route_number"] }, ...],
+    "place_id": "…",
+    "confidence": 0.85,
+    "match": { "matched": ["route_type", "route", "route_number", "admin_level_3"], "unmatched": [] }
+  }]
+}</code></pre><div><table><thead><tr><th>geocoding_type</th><th>Qué significa</th></tr></thead><tbody><tr><td>DOOR</td><td>La puerta o el lote existen en la cartografía.</td></tr><tr><td>INTERPOLATED</td><td>Número calculado sobre la cuadra, del lado par o impar.</td></tr><tr><td>CENTER</td><td>Centro de la vía, la cuadra, la manzana o la urbanización (sin número).</td></tr><tr><td>APROXIMATE</td><td>Solo el distrito: no se encontró nada más preciso.</td></tr></tbody></table></div><p>Usa <code>confidence</code> para decidir: ≥ 0,8 úsalo directo; entre 0,5 y 0,8 muéstralo para que la persona confirme; menos de 0,5, pide más datos (el distrito, el número).</p></section><section id="inverso"><h2>Geocoding · Punto → dirección</h2><p><span>GET</span><span>/v1/geocode?latlon=lat,lon</span></p><p>La dirección de un punto (el GPS del usuario, un pin en el mapa). El primer resultado es el más preciso y los siguientes son los otros niveles del mismo lugar; cada uno trae <code>distance_m</code>.</p><div><table><thead><tr><th>Orden</th><th>Qué devuelve</th><th>Hasta</th></tr></thead><tbody><tr><td>1</td><td>La puerta más cercana (DOOR)</td><td>30 m</td></tr><tr><td>2</td><td>El lote, con su manzana, urbanización y la vía de al lado</td><td>25 m (o el lote de esa manzana, CENTER)</td></tr><tr><td>3</td><td>El número calculado del lado del punto (INTERPOLATED)</td><td>60 m de la vía</td></tr><tr><td>4</td><td>La vía más cercana</td><td>100 m</td></tr><tr><td>5</td><td>La manzana y la urbanización que contienen al punto</td><td>—</td></tr><tr><td>6</td><td>El distrito (siempre que el punto esté en el Perú)</td><td>—</td></tr></tbody></table></div><pre><code>curl "https://api.inkamaps.com/v1/geocode?latlon=-12.206878,-76.942540" -H "x-api-key: ik_sk_TU_KEY"
+# → "Calle C, Mz. L Lt. 8, P.J. Sector 2 Grupo 13, Villa El Salvador, Lima, Perú"  (a 0 m)</code></pre></section><section id="autocompletado"><h2>Autocompletado y detalle</h2><p><span>GET</span><span>/v1/autocomplete?input=…</span></p><p><span>GET</span><span>/v1/geocode/place?place_id=…</span></p><p>Para un buscador de direcciones: mientras la persona escribe, sugiere vías, urbanizaciones y distritos, y la dirección completa en cuanto escribe el número, la cuadra o la manzana y el lote. Al elegir una sugerencia, el detalle da su punto y sus segmentos. Las sugerencias son de la API <strong>Autocompletado</strong> y el detalle (<code>/v1/geocode/place</code>) es de <strong>Geocoding</strong>: habilita las dos en tu key.</p><div><table><thead><tr><th>Parámetro</th><th>Ejemplo</th><th>Para qué</th></tr></thead><tbody><tr><td><code>input</code></td><td>jr pedro r</td><td>Lo que se lleva escrito (mín. 2 caracteres). También vale search=, como en Geodir.</td></tr><tr><td><code>segments</code></td><td>locality_id:150105</td><td>Solo dentro de ese distrito, provincia o departamento.</td></tr><tr><td><code>location</code></td><td>-12.12,-77.03</td><td>Lo cercano a ese punto primero (la ubicación del usuario, el centro de tu mapa).</td></tr><tr><td><code>size</code></td><td>5</td><td>Cuántas sugerencias (1–10).</td></tr></tbody></table></div><pre><code>{
+  "status": "OK",
+  "predictions": [{
+    "types": ["route"],
+    "main_text": "Jirón Pedro Ruiz Gallo",
+    "secondary_text": "Breña, Lima, Lima",
+    "description": "Jirón Pedro Ruiz Gallo, Breña, Lima, Perú",
+    "place_id": "…",
+    "matched_substrings": [{ "offset": 6, "length": 5 }]
+  }]
+}</code></pre><p><code>matched_substrings</code> marca en <code>main_text</code> lo que coincide (para ponerlo en negrita). El detalle responde con el resultado <strong>en el primer nivel</strong>, como Geodir: <code>{ "status": "OK", "result_types", "address_segments", "geometry", "place_id", "standard_address" }</code>. Espera ~300 ms desde la última tecla antes de llamar.</p></section><section id="capas"><h2>Geocoding · Capas y domicilio (búsqueda estructurada)</h2><p>Para formularios paso a paso, como «Buscar domicilio» de Geodir Maps: <strong>Distrito → Vía → Número</strong>, o <strong>Distrito → Urbanización → Manzana → Lote</strong>. Cada campo sugiere dentro de lo ya elegido (con su <code>place_id</code>) y, con todo elegido, pides el domicilio.</p><p><span>GET</span><span>/v1/geocode/layers/{adminlevel3 | routes | sublocalities | blocks | lots}?input=…</span></p><div><table><thead><tr><th>Capa</th><th>Sugiere</th><th>Parámetros</th></tr></thead><tbody><tr><td>adminlevel3</td><td>Distritos</td><td>input</td></tr><tr><td>routes</td><td>Vías</td><td>input, locality_id; con sublocality_id, primero las de ese núcleo</td></tr><tr><td>sublocalities</td><td>Urbanizaciones, AA.HH., P.J.…</td><td>input, locality_id; con route_id, primero por las que pasa esa vía</td></tr><tr><td>blocks</td><td>Manzanas del núcleo, en orden (C1, C2… C10)</td><td>sublocality_id (o locality_id + input)</td></tr><tr><td>lots</td><td>Lotes de la manzana, en orden</td><td>block_id (o sublocality_id + block)</td></tr></tbody></table></div><p>Responde <code>{ "status", "items": [...] }</code>, cada ítem con el mismo molde que un resultado. Con un núcleo, vía o manzana elegidos, <code>input</code> puede ir vacío (la lista completa).</p><pre><code>curl "https://api.inkamaps.com/v1/geocode/layers/routes?input=pedro&locality_id=150105" -H "x-api-key: ik_sk_TU_KEY"</code></pre><p><span>GET</span><span>/v1/geocode/structured?locality_id=…&route_id=…&street_number=…&sublocality_id=…&block=…&lot=…</span></p><p>El domicilio armado con lo elegido: vía + número → la puerta (o el número calculado sobre su cuadra); núcleo + manzana + lote → el lote; núcleo + manzana → la manzana. La manzana y el lote van como letra/número (<code>block=L</code>, <code>lot=8</code>) o como <code>block_id</code> / <code>lot_id</code>. Lo elegido tiene que estar en el <code>locality_id</code>. Mismo formato que la georreferenciación.</p><pre><code>curl "https://api.inkamaps.com/v1/geocode/structured?locality_id=150142&sublocality_id=&lt;place_id>&block=L&lot=8"   -H "x-api-key: ik_sk_TU_KEY"
+
+# Como Geodir: lo mismo en segments, sin address
+curl "https://api.inkamaps.com/v1/geocode?segments=locality_id:150105|route_id:&lt;place_id>|street_number:668"   -H "x-api-key: ik_sk_TU_KEY"</code></pre><p>Los <code>place_id</code> pueden traer <code>+</code>, <code>/</code> o <code>=</code>: codifícalos en la URL.</p></section><section id="mapa-base"><h2>Mapa base</h2><p>Mapa vectorial del Perú (límites, vías con nombre y cuadras, urbanizaciones, manzanas, lotes y numeración) para MapLibre GL JS, en varios estilos. Usa una <strong>key de navegador</strong> con la API <strong>Mapa base</strong> y tus dominios. Cuenta una <strong>carga</strong> cada vez que se abre el mapa (no cada tesela).</p><pre><code>&lt;link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" />
+&lt;script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js">&lt;/script>
+&lt;div id="mapa" style="height: 500px">&lt;/div>
+&lt;script>
+  new maplibregl.Map({
+    container: "mapa",
+    style: "https://mapas.inkamaps.com/v1/estilos/inkamaps.json?key=ik_pk_TU_KEY",
+    center: [-77.0365, -12.1219],   // [longitud, latitud]
+    zoom: 15,
+  });
+&lt;/script></code></pre><p>Para cambiar de estilo cambia <code>inkamaps</code> por otro nombre: <code>estandar</code>, <code>claro</code>, <code>calles</code>, <code>andino</code>, <code>pergamino</code>, <code>oscuro</code> o <code>medianoche</code>. Los ves con su vista previa en la sección <strong>Mapa base</strong> de tu consola, o en <code>https://mapas.inkamaps.com/v1/temas.json</code>. Las teselas llevan un token que vence en 24 h: la key no viaja en cada tesela.</p></section><section id="builder"><h2>InkaMaps Builder · Consultas a tus capas</h2><p>Las capas que tu equipo crea en <strong>Construye tu mapa</strong> (dibujadas, subidas como Shapefile, KML, GeoPackage, CSV… o resultado de un análisis) se consultan por API: ¿en qué zona de reparto cae esta dirección?, ¿qué tienda está más cerca?, ¿qué clientes hay a 500 m? Necesitas una key con la API <strong>Builder</strong>, y la capa tiene que ser de un usuario de tu empresa. El <code>id</code> de la capa está en su pestaña <strong>Consultar</strong>.</p><p><span>GET</span><span>/v1/builder/capas/{id}/{contiene | cercanos | radio}?lat=…&lon=… (o address=…)</span></p><div><table><thead><tr><th>Operación</th><th>Para</th><th>Parámetros</th></tr></thead><tbody><tr><td>contiene</td><td>En qué polígono cae el punto (capas de polígonos)</td><td>lat, lon o address</td></tr><tr><td>cercanos</td><td>Los k elementos más cercanos, con su distancia en metros</td><td>k (1–50, por defecto 5), max_m (hasta 50.000; por defecto 2.000)</td></tr><tr><td>radio</td><td>Todo lo que está a r metros o menos</td><td>r (hasta 50.000)</td></tr><tr><td>intersecta (POST)</td><td>Lo que cruza una geometría (una ruta, un polígono)</td><td>{ "geometry": GeoJSON }</td></tr></tbody></table></div><pre><code>curl "https://api.inkamaps.com/v1/builder/capas/3fa9c2d1e0b4/contiene?address=Av.%20Larco%20345%20Miraflores"   -H "x-api-key: ik_sk_TU_KEY"
+
+{ "status": "OK",
+  "location": { "lat": -12.1219, "lon": -77.0297 },
+  "results": [ { "feature_id": "a1b2", "properties": { "zona": "Z4", "repartidor": "Lima Sur" }, "distance_m": 0 } ] }</code></pre><p>Cada resultado trae <code>feature_id</code>, <code>properties</code> (los campos del elemento), <code>distance_m</code> (en línea recta) y, en líneas y polígonos, <code>punto</code>: el punto del elemento más cercano al consultado. Con <code>geometria=true</code> también trae la geometría. Sin resultados: <code>"status": "ZERO_RESULTS"</code>.</p><p><strong>En lote</strong>: hasta 1.000 puntos en un POST a la misma ruta, una respuesta por punto en el mismo orden.</p><pre><code>curl -X POST "https://api.inkamaps.com/v1/builder/capas/3fa9c2d1e0b4/contiene" -H "x-api-key: ik_sk_TU_KEY"   -H "Content-Type: application/json"   -d '{ "puntos": [ { "id": "pedido-1", "lat": -12.10, "lon": -77.04 }, { "id": "pedido-2", "address": "Jr. Ucayali 120, Lima" } ] }'</code></pre><p><span>GET</span><span>/v1/builder/servicios/{id}?lat=…&lon=… (o address=…)</span></p><p>Un <strong>servicio guardado</strong> es una consulta con nombre (operación, parámetros, un filtro y los campos a devolver) que se arma desde el mapa y queda con esta URL fija. Acepta también lote por POST.</p></section><section id="errores"><h2>Errores</h2><p>Los errores tienen la forma:</p><pre><code>{ "success": false, "error": { "code": "FORBIDDEN", "message": "Dominio no permitido para esta key" } }</code></pre><div><table><thead><tr><th>HTTP</th><th>code</th><th>Qué pasó</th></tr></thead><tbody><tr><td>400</td><td>VALIDATION_ERROR</td><td>Un parámetro es inválido (el mensaje dice cuál).</td></tr><tr><td>401</td><td>UNAUTHORIZED</td><td>Falta el header x-api-key, o la key no existe.</td></tr><tr><td>403</td><td>FORBIDDEN</td><td>Key pausada o revocada, cuenta suspendida, API no habilitada en tu key o dominio no permitido. El mensaje dice el motivo.</td></tr><tr><td>404</td><td>NOT_FOUND</td><td>El lugar no existe o no está publicado.</td></tr><tr><td>429</td><td>RATE_LIMITED</td><td>Superaste las consultas por segundo. Reintenta en un momento.</td></tr><tr><td>429</td><td>QUOTA_EXCEEDED</td><td>Superaste la cuota diaria de tu key. Se renueva al día siguiente (UTC).</td></tr><tr><td>500</td><td>INTERNAL_ERROR</td><td>Error nuestro. Si se repite, escríbenos con el requestId.</td></tr></tbody></table></div><p>Geocoding y Autocompletado responden sus propios errores en formato Geodir: <code>{ "status": "INVALID_REQUEST", "error_message": "…" }</code> (400), <code>NOT_FOUND</code> (404, un <code>place_id</code> que no existe) y <code>ZERO_RESULTS</code> (200, sin resultados). Los de la key (401, 403, 429) son los de la tabla.</p></section><section id="limites"><h2>Límites de uso</h2><p>Cada key tiene un límite de consultas por segundo y por día, según lo acordado con InkaMaps. En la sección <strong>Uso</strong> de tu consola ves el consumo de cada API (Places, Geocoding, Autocompletado y las cargas del Mapa base) día por día, de los últimos 7, 30 o 90 días, y cuánto lleva cada key hoy frente a su límite. Si te quedas corto, escríbenos y lo ampliamos.</p><p>Consejos: guarda en caché los detalles de lugares (cambian poco), espera a que el usuario deje de escribir ~300 ms antes de llamar al autocompletado, y reintenta los 429 con espera creciente (1 s, 2 s, 4 s…).</p></section><section id="ejemplos"><h2>Ejemplos por lenguaje</h2><h3>Node.js / Next.js (servidor)</h3><pre><code>// .env  →  INKAMAPS_API_KEY=ik_sk_…   (nunca NEXT_PUBLIC_)
+const res = await fetch(
+  "https://api.inkamaps.com/v1/places/search?lat=-12.065&lon=-75.21&radiusKm=2",
+  { headers: { "x-api-key": process.env.INKAMAPS_API_KEY! } },
+);
+const body = await res.json();
+if (!body.success) throw new Error(body.error.message);
+const lugares = body.data.results;</code></pre><h3>Python</h3><pre><code>import os, requests
+
+r = requests.get(
+    "https://api.inkamaps.com/v1/places/search",
+    params={"q": "mirador", "city": "huancayo"},
+    headers={"x-api-key": os.environ["INKAMAPS_API_KEY"]},
+    timeout=10,
+)
+r.raise_for_status()
+lugares = r.json()["data"]["results"]</code></pre><h3>PHP</h3><pre><code>$ch = curl_init("https://api.inkamaps.com/v1/places/autocomplete?q=" . urlencode("mira"));
+curl_setopt($ch, CURLOPT_HTTPHEADER, ["x-api-key: " . getenv("INKAMAPS_API_KEY")]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$data = json_decode(curl_exec($ch), true);</code></pre><h3>Navegador (key ik_pk_ con tu dominio registrado)</h3><pre><code>const res = await fetch("https://api.inkamaps.com/v1/places/search?bbox=-75.23,-12.08,-75.19,-12.05", {
+  headers: { "x-api-key": "ik_pk_…" },   // pública: solo responde desde tus dominios
+});</code></pre></section><section id="probar"><h2>Probar con tu key</h2><p>En la <a href="https://www.inkamaps.com/consola">consola</a>, <strong>Probar las APIs</strong>: eliges una de tus keys, escribes una dirección (o tocas el mapa) y ves la respuesta tal cual, cuánto tardó y el punto en el mapa base (en el estilo que elijas), con el <code>curl</code> listo para copiar. En <strong>Mapa base</strong> ves todos los estilos, los pruebas en vivo y copias el código para tu web.</p><p><a class="btn btn-primary" href="https://www.inkamaps.com/consola">Ir a la consola →</a></p></section>
+    </article>
+  </div>
+</main>
+<script src="assets/site.js"></script>
+</body>
+</html>
