@@ -69,11 +69,9 @@
             <div class="container mega-inner">
               <div class="mega-col">
                 <a class="mega-head" href="index.html#mision"><span class="mega-icon">${icon.heart}</span><h3>Nosotros</h3></a>
-                <p>Lo que nos mueve y cómo trabajamos.</p>
+                <p>Nuestra misión y cómo trabajamos.</p>
                 <ul>
-                  <li><a href="index.html#mision">Nuestra misión<small>Democratizar los anuncios inmobiliarios</small></a></li>
-                  <li><a href="index.html#principios">Nuestros principios<small>Lo que guía todo lo que construimos</small></a></li>
-                  <li><a href="index.html#diferencia">Nuestra diferencia<small>Un mapa para quien publica y quien busca</small></a></li>
+                  <li><a href="index.html#mision">Nuestra misión<small>Mejores servicios a través de los mapas</small></a></li>
                   <li><a href="index.html#valores">Cómo trabajamos<small>Hecho en el Perú, justo y en soles</small></a></li>
                 </ul>
               </div>
